@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Trade - Professional Trading Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2962FF;
+            --primary-dark: #1E40FF;
+            --primary-light: #3D7EFF;
+            --secondary: #00C9FF;
+            --dark: #0F172A;
+            --darker: #0A0F1C;
+            --light: #F8FAFC;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .cta-button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(41, 98, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(41, 98, 255, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 0;
+            z-index: 1;
+        }
+
+        .hero-text {
+            margin-bottom: 50px;
+            max-width: 600px;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Phone Section */
+        .phone-section {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .phone-mockup {
+            position: relative;
+            width: 320px;
+            height: 650px;
+            background: #1E293B;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 12px solid #0F172A;
+            transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: perspective(1000px) rotateY(-10deg) rotateX(5deg) translateY(0); }
+            50% { transform: perspective(1000px) rotateY(-10deg) rotateX(5deg) translateY(-15px); }
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 25px;
+            background: #0F172A;
+            border-radius: 0 0 15px 15px;
+            z-index: 10;
+        }
+
+        .app-content {
+            padding: 50px 20px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .app-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .app-header p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .trading-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .asset-name {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .asset-name h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .price-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .price-change.negative {
+            color: #EF4444;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .chart-placeholder {
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.3) 50%, transparent 100%);
+        }
+
+        .trading-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .trade-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .buy-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .sell-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .market-overview {
+            margin-top: auto;
+        }
+
+        .market-overview h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .market-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .market-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .market-item .name {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .market-item .value {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .market-item .change {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .market-item .change.negative {
+            color: #EF4444;
+        }
+
+        /* Registration Section - Hidden by Default */
+        .registration-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .registration-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .registration-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .registration-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(41, 98, 255, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(41, 98, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(41, 98, 255, 0.4);
+        }
+
+        .features {
+            margin-top: 30px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .feature-item span:first-child {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Background Elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1);
+            filter: blur(60px);
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            right: 10%;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 5%;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: drift 25s linear infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 8%;
+            animation-delay: 5s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 10%;
+            animation-delay: 10s;
+        }
+
+        .floating-element:nth-child(4) {
+            bottom: 15%;
+            right: 12%;
+            animation-delay: 15s;
+        }
+
+        .floating-element:nth-child(5) {
+            top: 60%;
+            left: 8%;
+            animation-delay: 20s;
+        }
+
+        @keyframes drift {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .phone-mockup {
+                width: 280px;
+                height: 580px;
+            }
+            
+            .registration-container {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-text p {
+                font-size: 1rem;
+            }
+            
+            .phone-mockup {
+                width: 250px;
+                height: 520px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-elements">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <div class="floating-elements">
+        <div class="floating-element">Stocks</div>
+        <div class="floating-element">Forex</div>
+        <div class="floating-element">Crypto</div>
+        <div class="floating-element">Commodities</div>
+        <div class="floating-element">Indices</div>
+    </div>
+
+    <!-- Main Landing Page -->
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎯 Prime Trade</div>
+            <button class="cta-button" id="getStartedBtn">Start Trading</button>
+        </div>
+
+        <div class="main-content">
+            <div class="hero-text">
+                <h1>Professional Trading Made Simple</h1>
+                <p>Join thousands of traders using our advanced platform to trade stocks, forex, crypto, and more with institutional-grade tools.</p>
+            </div>
+
+            <div class="phone-section">
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-content">
+                            <div class="app-header">
+                                <h2>Prime Trade Pro</h2>
+                                <p>Professional Trading Platform</p>
+                            </div>
+                            
+                            <div class="trading-card">
+                                <div class="asset-name">
+                                    <h3>EUR/USD</h3>
+                                    <div class="price-change positive">+0.45%</div>
+                                </div>
+                                <div class="price">1.08742</div>
+                                <div class="chart-placeholder">
+                                    <div class="chart-line"></div>
+                                </div>
+                                <div class="trading-actions">
+                                    <button class="trade-btn buy-btn">BUY</button>
+                                    <button class="trade-btn sell-btn">SELL</button>
+                                </div>
+                            </div>
+                            
+                            <div class="market-overview">
+                                <h3>Market Overview</h3>
+                                <div class="market-items">
+                                    <div class="market-item">
+                                        <div class="name">NASDAQ</div>
+                                        <div class="value">15,842</div>
+                                        <div class="change positive">+1.2%</div>
+                                    </div>
+                                    <div class="market-item">
+                                        <div class="name">GOLD</div>
+                                        <div class="value">1,985</div>
+                                        <div class="change positive">+0.8%</div>
+                                    </div>
+                                    <div class="market-item">
+                                        <div class="name">BTC/USD</div>
+                                        <div class="value">43,210</div>
+                                        <div class="change negative">-2.1%</div>
+                                    </div>
+                                    <div class="market-item">
+                                        <div class="name">OIL</div>
+                                        <div class="value">78.45</div>
+                                        <div class="change positive">+0.5%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal - Hidden by Default -->
+    <div class="registration-section" id="registrationSection">
+        <div class="registration-container">
+            <div class="registration-header">
+                <h2>Create Your Account</h2>
+                <button class="close-btn" id="closeRegistrationBtn">&times;</button>
+            </div>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Create Trading Account</button>
+            </form>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <span>✅</span>
+                    <span>Trade with as little as $10</span>
+                </div>
+                <div class="feature-item">
+                    <span>✅</span>
+                    <span>85% potential returns on successful trades</span>
+                </div>
+                <div class="feature-item">
+                    <span>✅</span>
+                    <span>100+ trading assets available</span>
+                </div>
+                <div class="feature-item">
+                    <span>✅</span>
+                    <span>Instant withdrawals & deposits</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        // ── Get userId ───────────────────────────────────────────────
+        // Priority: Telegram WebApp user ID → URL path segment → URL param
+        function getUserId() {
+            // 1. Telegram WebApp
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user?.id) {
+                return window.Telegram.WebApp.initDataUnsafe.user.id.toString();
+            }
+            // 2. URL path: /register/USER_ID
+            const segments = window.location.pathname.split('/').filter(Boolean);
+            const regIdx = segments.indexOf('register');
+            if (regIdx !== -1 && segments[regIdx + 1]) return segments[regIdx + 1];
+            // 3. Query param ?userId=...
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('userId')) return params.get('userId');
+            // 4. Fallback — generate a temp ID (user won't be linkable to Telegram)
+            return 'user_' + Date.now();
+        }
+
+        // ── Toast notification (replaces alert) ──────────────────────
+        function showToast(message, type = 'error') {
+            let toast = document.getElementById('_toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = '_toast';
+                Object.assign(toast.style, {
+                    position: 'fixed', bottom: '30px', left: '50%',
+                    transform: 'translateX(-50%)', padding: '14px 24px',
+                    borderRadius: '12px', fontSize: '14px', fontWeight: '600',
+                    zIndex: '9999', maxWidth: '90vw', textAlign: 'center',
+                    transition: 'opacity 0.3s', color: 'white',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.4)'
+                });
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.background = type === 'success' ? '#00C853' : type === 'info' ? '#2962FF' : '#FF1744';
+            toast.style.opacity = '1';
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 3500);
+        }
+
+        // ── DOM refs ─────────────────────────────────────────────────
+        const getStartedBtn       = document.getElementById('getStartedBtn');
+        const registrationSection = document.getElementById('registrationSection');
+        const closeRegistrationBtn= document.getElementById('closeRegistrationBtn');
+        const registrationForm    = document.getElementById('registrationForm');
+        const submitBtn           = registrationForm.querySelector('.btn-primary');
+
+        // ── Open / close modal ────────────────────────────────────────
+        getStartedBtn.addEventListener('click', () => {
+            registrationSection.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeRegistrationBtn.addEventListener('click', closeModal);
+
+        registrationSection.addEventListener('click', (e) => {
+            if (e.target === registrationSection) closeModal();
+        });
+
+        function closeModal() {
+            registrationSection.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // ── Form submission → POST /api/register/:userId ──────────────
+        registrationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName  = document.getElementById('lastName').value.trim();
+            const email     = document.getElementById('email').value.trim();
+            const phone     = document.getElementById('phone').value.trim();
+
+            // Validation
+            if (!firstName || !lastName || !email || !phone) {
+                showToast('Please fill in all fields');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast('Please enter a valid email address');
+                return;
+            }
+
+            // Loading state
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+
+            const userId = getUserId();
+
+            try {
+                const response = await fetch(`/api/register/${userId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firstName, lastName, email, phone })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Account created! Redirecting...', 'success');
+                    // Tell Telegram WebApp we're done if inside Telegram
+                    if (window.Telegram?.WebApp) window.Telegram.WebApp.ready();
+                    setTimeout(() => {
+                        window.location.href = data.redirectUrl || `/dashboard/${userId}`;
+                    }, 1000);
+                } else {
+                    showToast(data.error || 'Registration failed. Try again.');
+                    submitBtn.textContent = 'Create Trading Account';
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showToast('Connection error. Please try again.');
+                submitBtn.textContent = 'Create Trading Account';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
